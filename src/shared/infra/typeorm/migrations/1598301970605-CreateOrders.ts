@@ -9,7 +9,7 @@ export default class CreateOrders1598301970605 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'order',
+        name: 'orders',
         columns: [
           {
             name: 'id',
@@ -21,7 +21,7 @@ export default class CreateOrders1598301970605 implements MigrationInterface {
           {
             name: 'customer_id',
             type: 'uuid',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'created_at',
@@ -38,7 +38,7 @@ export default class CreateOrders1598301970605 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      'order',
+      'orders',
       new TableForeignKey({
         name: 'OrderCustomer',
         columnNames: ['customer_id'],
@@ -51,8 +51,8 @@ export default class CreateOrders1598301970605 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('order', 'OrderCustomer');
+    await queryRunner.dropForeignKey('orders', 'OrderCustomer');
 
-    await queryRunner.dropTable('order');
+    await queryRunner.dropTable('orders');
   }
 }

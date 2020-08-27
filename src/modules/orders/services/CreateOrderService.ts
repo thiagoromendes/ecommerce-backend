@@ -35,19 +35,55 @@ class CreateOrderService {
       throw new AppError('Client not exists');
     }
 
-    // const productsID = products.map(product => product.id);
+    const productList = await this.productsRepository.findAllById(products);
 
-    const productFind = await this.productsRepository.findAllById(products);
-
-    const productList = productFind.map(product =>
-      Object.assign(product.id, product.price, product.quantity),
-    );
-
-    if (!productList) {
-      throw new AppError('Product not exists');
+    if (!productList.length) {
+      throw new AppError('Product in list not exists');
     }
 
-    const order = await this.ordersRepository.create({ customer, products });
+    const productListID = productList.map(product => product.id);
+
+    productListID.forEach(id => console.log(id));
+
+    const checkInexistingProducts = products.filter(product =>
+      productListID.includes(product.id),
+    );
+
+    if (!checkInexistingProducts) {
+      throw new AppError(`Could not find this product`);
+    }
+
+    const checkNoQuantityProducts = products.filter(
+      product =>
+        productList.filter(list => list.id === product.id)[0].quantity <
+        product.quantity,
+    );
+
+    console.log(checkNoQuantityProducts);
+
+    if (checkNoQuantityProducts.length > 0) {
+      throw new AppError('The quantity is not avaible');
+    }
+
+    const formatedProducts = products.map(product => ({
+      product_id: product.id,
+      quantity: product.quantity,
+      price: productList.filter(list => list.id === product.id)[0].price,
+    }));
+
+    const order = await this.ordersRepository.create({
+      customer,
+      products: formatedProducts,
+    });
+
+    const orderdProductsQuantity = products.map(product => ({
+      id: product.id,
+      quantity:
+        productList.filter(list => list.id === product.id)[0].quantity -
+        product.quantity,
+    }));
+
+    await this.productsRepository.updateQuantity(orderdProductsQuantity);
 
     return order;
   }

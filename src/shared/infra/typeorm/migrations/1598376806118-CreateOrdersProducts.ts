@@ -22,12 +22,12 @@ export default class CreateOrdersProducts1598376806118
           {
             name: 'product_id',
             type: 'uuid',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'order_id',
             type: 'uuid',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'price',
@@ -69,8 +69,8 @@ export default class CreateOrdersProducts1598376806118
         name: 'OrderID',
         columnNames: ['order_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'order',
-        onDelete: 'CASCADE',
+        referencedTableName: 'orders',
+        onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       }),
     );
