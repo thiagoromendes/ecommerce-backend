@@ -1,7 +1,5 @@
 import { inject, injectable } from 'tsyringe';
 
-import { join } from 'path';
-import { ConnectionManager } from 'typeorm';
 import Order from '../infra/typeorm/entities/Order';
 import IOrdersRepository from '../repositories/IOrdersRepository';
 

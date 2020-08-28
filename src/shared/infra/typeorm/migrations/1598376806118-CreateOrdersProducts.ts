@@ -31,11 +31,13 @@ export default class CreateOrdersProducts1598376806118
           },
           {
             name: 'price',
-            type: 'float',
+            type: 'decimal',
+            precision: 10,
+            scale: 2,
           },
           {
             name: 'quantity',
-            type: 'decimal',
+            type: 'int',
           },
           {
             name: 'created_at',

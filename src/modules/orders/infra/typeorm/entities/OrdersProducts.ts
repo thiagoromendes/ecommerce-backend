@@ -16,25 +16,25 @@ class OrdersProducts {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column('decimal')
+  price: number;
+
   @Column()
   product_id: string;
 
-  @ManyToOne(() => Product, product => product.order_products)
-  @JoinColumn({ name: 'product_id' })
-  product: Product;
+  @Column('int')
+  quantity: number;
 
   @Column()
   order_id: string;
 
+  @ManyToOne(() => Product, { cascade: true })
+  @JoinColumn({ name: 'product_id', referencedColumnName: 'id' })
+  product: Product;
+
   @ManyToOne(() => Order, order => order.order_products)
-  @JoinColumn({ name: 'order_id' })
+  @JoinColumn({ name: 'order_id', referencedColumnName: 'id' })
   order: Order;
-
-  @Column()
-  price: number;
-
-  @Column()
-  quantity: number;
 
   @CreateDateColumn()
   created_at: Date;

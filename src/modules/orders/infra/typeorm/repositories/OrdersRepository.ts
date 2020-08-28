@@ -2,7 +2,7 @@ import { getRepository, Repository } from 'typeorm';
 
 import IOrdersRepository from '@modules/orders/repositories/IOrdersRepository';
 import ICreateOrderDTO from '@modules/orders/dtos/ICreateOrderDTO';
-import Customer from '@modules/customers/infra/typeorm/entities/Customer';
+
 import Order from '../entities/Order';
 
 class OrdersRepository implements IOrdersRepository {
@@ -23,10 +23,7 @@ class OrdersRepository implements IOrdersRepository {
   }
 
   public async findById(id: string): Promise<Order | undefined> {
-    const order = await this.ormRepository.findOne(id, {
-      relations: ['customer', 'order_products'],
-      order: { customer: 'DESC' },
-    });
+    const order = await this.ormRepository.findOne(id);
 
     return order;
   }

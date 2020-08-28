@@ -43,8 +43,6 @@ class CreateOrderService {
 
     const productListID = productList.map(product => product.id);
 
-    productListID.forEach(id => console.log(id));
-
     const checkInexistingProducts = products.filter(product =>
       productListID.includes(product.id),
     );
@@ -58,8 +56,6 @@ class CreateOrderService {
         productList.filter(list => list.id === product.id)[0].quantity <
         product.quantity,
     );
-
-    console.log(checkNoQuantityProducts);
 
     if (checkNoQuantityProducts.length > 0) {
       throw new AppError('The quantity is not avaible');
